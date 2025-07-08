@@ -14,7 +14,7 @@ current_card = {}
 # print(new_dict)
 
 #Read data from french_words.csv
-if os.path.exists("words_to_learn.csv"):
+if os.path.exists("data/words_to_learn.csv"):
     data = pandas.read_csv("data/words_to_learn.csv")
 else:
     data = pandas.read_csv("data/arabic_words.csv")
@@ -49,6 +49,14 @@ def known_card():
     data_to_save.to_csv("data/words_to_learn.csv", index=False)
     next_card()
 
+#-------------------------Reset Progress-----------------------------
+def reset_progress():
+    global to_learn
+    data = pandas.read_csv("data/arabic_words.csv")
+    to_learn = data.to_dict(orient="records")
+    pandas.DataFrame(to_learn).to_csv("data/words_to_learn.csv", index=False)
+    next_card()
+
 
 
 #Create window
@@ -78,6 +86,12 @@ wrong_btn.grid(row=1, column=0)
 right_img = PhotoImage(file="images/right.png")
 right_btn = Button(image=right_img, highlightthickness=0, command=known_card)
 right_btn.grid(row=1, column=1)
+
+#Reset Buttton
+reset_btn = Button(text="Reset Progress", command=reset_progress, font=(FONT_NAME, 12, "bold"), bg="white", fg="black")
+reset_btn.grid(row=2, column=0, columnspan=2, pady=20)
+
+
 
 
 next_card()
