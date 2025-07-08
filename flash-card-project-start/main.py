@@ -1,27 +1,21 @@
 from tkinter import *
+from tkinter import simpledialog
 import pandas
 import random
 import time
 import os
+
+
 
 #CONSTANTS
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_NAME = "Arial"
 current_card = {}
 
+
 # Manually constructed dict from columns (just for fun)
 # new_dict = {data_dict["French"][i] : data_dict["English"][i] for i in range(len(data_dict["French"]))}
 # print(new_dict)
-
-#Read data from french_words.csv
-if os.path.exists("data/words_to_learn.csv"):
-    data = pandas.read_csv("data/words_to_learn.csv")
-else:
-    data = pandas.read_csv("data/arabic_words.csv")
-to_learn = data.to_dict(orient="records")
-
-
-
 
 
 
@@ -45,16 +39,15 @@ def flip_card():
 #-------------------------Remove Known Cards and save remaining words to csv file to save progress-----------------------------
 def known_card():
     to_learn.remove(current_card)
-    data_to_save = pandas.DataFrame(to_learn)
-    data_to_save.to_csv("data/words_to_learn.csv", index=False)
+    pandas.DataFrame(to_learn).to_csv(progress_file, index=False)
     next_card()
 
 #-------------------------Reset Progress-----------------------------
 def reset_progress():
     global to_learn
-    data = pandas.read_csv("data/arabic_words.csv")
+    data = pandas.read_csv(base_file)
     to_learn = data.to_dict(orient="records")
-    pandas.DataFrame(to_learn).to_csv("data/words_to_learn.csv", index=False)
+    pandas.DataFrame(to_learn).to_csv(progress_file, index=False)
     next_card()
 
 
@@ -63,6 +56,19 @@ def reset_progress():
 window = Tk()
 window.title("Learn Arabic")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
+
+#Ask user what difficulty of arabic they want to learn
+difficulty = simpledialog.askstring("Difficulty", "Choose difficulty: beginner, intermediate, or expert").lower()
+base_file = f"data/Arabic/arabic_{difficulty}.csv"
+progress_file = f"data/Arabic/{difficulty}_arabic_words_to_learn.csv"
+
+#Read data from french_words.csv
+if os.path.exists(progress_file):
+    data = pandas.read_csv(progress_file)
+else:
+    data = pandas.read_csv(base_file)
+to_learn = data.to_dict(orient="records")
+
 
 
 # Card images
