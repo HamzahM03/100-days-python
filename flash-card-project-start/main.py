@@ -1,9 +1,20 @@
 from tkinter import *
 import pandas
+import random
 
 #CONSTANTS
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_NAME = "Arial"
+
+#-------------------------GENERATE A RANDOM WORD TO DISPLAY-----------------------------
+def random_word():
+    key,value = random.choice(list(new_dict.items()))
+    canvas.itemconfig(word, text=key)
+
+
+
+
+
 
 #Read data from french_words.csv
 data = pandas.read_csv("data/french_words.csv")
@@ -28,16 +39,16 @@ canvas.config(highlightthickness=0, bg=BACKGROUND_COLOR)
 canvas.grid(row=0, column=0, columnspan=2)
 
 #Text on canvas
-canvas.create_text(400, 150, text="title", font=(FONT_NAME,40, "italic"))
-canvas.create_text(400, 263, text="word", font=(FONT_NAME,60, "bold"))
+title = canvas.create_text(400, 150, text="French", font=(FONT_NAME,40, "italic"))
+word = canvas.create_text(400, 263, text="word", font=(FONT_NAME,60, "bold"))
 
 #Buttons
 incorrect_img = PhotoImage(file="images/wrong.png")
-incorrect_btn = Button(image=incorrect_img, highlightthickness=0)
+incorrect_btn = Button(image=incorrect_img, highlightthickness=0, command=random_word)
 incorrect_btn.grid(row=1, column=0)
 
 correct_img = PhotoImage(file="images/right.png")
-correct_btn = Button(image=correct_img, highlightthickness=0)
+correct_btn = Button(image=correct_img, highlightthickness=0, command=random_word)
 correct_btn.grid(row=1, column=1)
 
 
