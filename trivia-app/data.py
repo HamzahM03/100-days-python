@@ -6,7 +6,6 @@ parameters = {
 }
 
 data = requests.get(url=API_URL, params=parameters).json()["results"]
-print(data)
 
 
 question_data = data
